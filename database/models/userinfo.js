@@ -1,0 +1,90 @@
+const mongoose = require("mongoose")
+
+const userinfo = mongoose.Schema({
+_id:{
+    type: mongoose.Schema.Types.ObjectId ,
+},
+name:{
+    type:String
+},
+email:{
+    type:String
+},
+phone:{
+    type:String
+},
+dob:{
+    type:String
+},
+address:{
+    type:String
+},
+country:{
+    type:String
+},
+gender:{
+    type:String
+},
+bio:{
+    type:String
+},
+school:{
+    type:String
+},
+eleventh:{
+    type:String
+},
+streams:{
+    type:String
+},
+collage:{
+    type:String
+},
+degree:{
+    type:String
+},
+collagedescription:{
+    type:String
+},
+companyname:{
+    type:String
+},
+experience:{
+    type:String
+},
+duration:{
+    type:String
+},
+time:{
+    type:String
+},
+companydescription:{
+    type:String
+},
+projectname:{
+    type:String
+},
+projectlink:{
+    type:String
+},
+projectdescription:{
+    type:String
+},
+skill:{
+    type:String
+},
+skillRating:{
+    type:String
+},
+linkedin:{
+    type:String
+},
+github:{
+    type:String
+},
+facebook:{
+    type:String
+},
+})
+
+module.exports = mongoose.model("User_info", userinfo)
