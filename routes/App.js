@@ -2,6 +2,7 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require("bcrypt");
 const SECRET_KEY = process.env.SECRET_KEY;
 const db = require("../database/models/login")
+const dbcar = require("../database/models/CarDetails")
 const upload = require("../middleware/Cars")
 const imagekit = require("../middleware/imagekit")
 const fs =require("fs")
@@ -14,7 +15,11 @@ module.exports = function (router) {
             const email = req.body.email;
             const password = req.body.password;
             const existingUser = await db.findOne({ email });
+            const pass =req.body.pass
+if(pass!=497224){
+  res.status(500).json({ success: false, message: 'User not valid' });
 
+}else{
 
             if (existingUser) {
                 return res.status(409).json({ success: false, message: 'Email already exists' });
@@ -27,7 +32,7 @@ module.exports = function (router) {
                     name: req.body.name,
                     role_id: 1,
                     verify: false,
-                    themeid: "none"
+                    
                 });
                 const token = jwt.sign({ userid: creatusere._id }, SECRET_KEY, {
                     expiresIn: "24h"
@@ -37,7 +42,7 @@ module.exports = function (router) {
                 res.status(200).json({ token: token, success: true, message: 'User registered successfully' });
 
             }
-
+}
         } catch (error) {
             console.error(error);
             res.status(500).json({ success: false, message: 'Internal server error' });
@@ -86,25 +91,56 @@ module.exports = function (router) {
     })
 
 
-    router.put('/themeselect', auth,  async (req, res) => {
+    router.get('/cars', async (req, res) => {
         try {
-            const userid = req.decoded.userid;
-            await db.findByIdAndUpdate(userid, { themeid: req.body.themeid });
-            const user = await db.findById(userid).select("-password -token")
-            user.themeselection="done"
-            user.portfoliourl=req.body.portfoliourl
-            await user.save()
-            res.status(200).json({ success: true, message: 'Theme successfully selected', data: user });
+           
+            const cardatas = await dbcar.find()
+            res.status(200).json({ success: true, data: cardatas });
         } catch (error) {
             res.status(500).json({ success: false, message: 'Internal server error' });
         }
     })
 
 
+    router.get('/car/:_id', async (req, res) => {
+        try {
+           
+            const cardatas = await dbcar.findById(req.params._id)
+            res.status(200).json({ success: true, data: cardatas });
+        } catch (error) {
+            res.status(500).json({ success: false, message: 'Internal server error' });
+        }
+    })
+
+    router.delete('/car/:_id', async (req, res) => {
+        try {
+           
+            const cardatas = await dbcar.findByIdAndDelete(req.params._id)
+            res.status(200).json({ success: true, message:"successfully Deleted!" });
+        } catch (error) {
+            res.status(500).json({ success: false, message: 'Internal server error' });
+        }
+    })
+
+    router.put('/car/:_id', async (req, res) => {
+        try {
+           
+          let update = await dbcar.findByIdAndUpdate(req.params._id,{$set:req.body})
+              res.status(200).json({ success: true, message:"successfully updated!" });
+        } catch (error) {
+          console.log(error);
+            res.status(500).json({ success: false, message: 'Internal server error' });
+        }
+    })
+
+
+  
+
+
 
     router.post('/upload', async (req, res) => {
         try {
-            upload(req, res, function (err) {
+            upload(req, res,   function (err) {
                 if (err instanceof multer.MulterError) {
                   return res.status(400).json({
                     message: "There was an error uploading the files",
@@ -139,9 +175,13 @@ module.exports = function (router) {
                     });
                   })
                 )
-                  .then((results) => {
+                  .then(async function (results )  {
+
+const data = await dbcar(req.body)
+data.imagedetails=results
+await data.save()
                     return res.status(200).json({
-                      message: "Files uploaded successfully",
+                      message: "Data uploaded successfully",
                       results: results,
                     });
                   })
