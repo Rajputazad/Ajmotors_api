@@ -150,8 +150,8 @@ if(pass!=497224){
                     message: err.message,
                   });
                 }
-            
                 const files = req.files;
+                console.log(files);
             
                 Promise.all(
                   files.map((file) => {
@@ -180,6 +180,7 @@ if(pass!=497224){
 const data = await dbcar(req.body)
 data.imagedetails=results
 await data.save()
+console.log(results);
                     return res.status(200).json({
                       message: "Data uploaded successfully",
                       results: results,
