@@ -90,13 +90,17 @@ module.exports = function (router) {
     }
   })
 
-
-  router.get('/cars', async (req, res) => {
+// const dataPerPage = 2;
+// let currentPage = 1;
+  router.get('/cars/:page', async (req, res) => {
     try {
-
-      const cardatas = await dbcar.find()
+      const dataPerPage=10
+    const skip = (req.params.page - 1) *10
+      const cardatas = await dbcar.find().skip(skip).limit(dataPerPage).lean().exec();
+      //  currentPage++;
       res.status(200).json({ success: true, data: cardatas });
     } catch (error) {
+      console.log(error);
       res.status(500).json({ success: false, message: 'Internal server error' });
     }
   })
