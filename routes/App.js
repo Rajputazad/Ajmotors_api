@@ -97,8 +97,9 @@ module.exports = function (router) {
       const dataPerPage=10
     const skip = (req.params.page - 1) *10
       const cardatas = await dbcar.find().skip(skip).limit(dataPerPage).lean().exec();
+      const reversedata = cardatas.reverse();
       //  currentPage++;
-      res.status(200).json({ success: true, data: cardatas });
+      res.status(200).json({ success: true, data: reversedata });
     } catch (error) {
       console.log(error);
       res.status(500).json({ success: false, message: 'Internal server error' });
