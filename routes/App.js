@@ -217,7 +217,7 @@ module.exports = function (router) {
 				}
 				,);
         const reversedata = users.reverse();
-			res.json({ success: true, Data: reversedata });
+			res.json({ success: true, data: reversedata });
 
 
 		} catch (error) {
