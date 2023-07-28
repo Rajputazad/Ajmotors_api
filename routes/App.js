@@ -205,5 +205,27 @@ module.exports = function (router) {
   })
 
 
+  router.get("/search/:search", async (req, res) => {
+		try {
+			let search=req.params.search
+			let users = await dbcar.find(
+				{
+					"$or": [{ "carname": { $regex: search,$options:"i" } },
+					{ "numberplate": { $regex:  search,$options:"i" } },
+					{ "price": { $regex:  search,$options:"i" } }
+					]
+				}
+				,);
+			res.json({ success: true, Data: users });
+
+
+		} catch (error) {
+			res.json({ success: false, message: "something went wrong" });
+			console.log(error);
+		}
+	});
+
+
+
   return router
 }
