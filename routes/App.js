@@ -7,16 +7,17 @@ const upload = require("../middleware/Cars")
 const imagekit = require("../middleware/imagekit")
 const fs = require("fs")
 const multer = require("multer");
+const multe = require("multer")();
 const auth = require("../middleware/auth")
 module.exports = function (router) {
 
-  router.post('/register', async (req, res) => {
+  router.post('/register',multe.any(), async (req, res) => {
     try {
-      const email = req.body.email;
+      const mobile = req.body.mobile;
       const password = req.body.password;
-      const existingUser = await db.findOne({ email });
+      const existingUser = await db.findOne({ mobile });
       const pass = req.body.pass
-      if (pass != 497224) {
+      if (pass != 999849) {
         res.status(500).json({ success: false, message: 'User not valid' });
 
       } else {
@@ -27,15 +28,15 @@ module.exports = function (router) {
           const hashedPassword = await bcrypt.hash(password, 10);
 
           const creatusere = await db.create({
-            email: email,
+            mobile: mobile,
             password: hashedPassword,
             name: req.body.name,
             role_id: 1,
-            verify: false,
+            verify: true,
 
           });
           const token = jwt.sign({ userid: creatusere._id }, SECRET_KEY, {
-            expiresIn: "24h"
+            expiresIn: "744h"
           })
           creatusere.token[0] = token
           await creatusere.save();
@@ -48,12 +49,12 @@ module.exports = function (router) {
       res.status(500).json({ success: false, message: 'Internal server error' });
     }
   });
-  router.post('/login', async (req, res) => {
+  router.post('/login',multe.any(), async (req, res) => {
     try {
-      const email = req.body.email
+      const mobile = req.body.mobile
       const password = req.body.password
 
-      const user = await db.findOne({ email });
+      const user = await db.findOne({ mobile });
       if (!user) {
         return res.status(401).json({ success: false, message: 'Invalid credentials' });
       }

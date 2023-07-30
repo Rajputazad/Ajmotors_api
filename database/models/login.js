@@ -1,7 +1,7 @@
 const mongoose = require("mongoose")
 
 const loginSchema = mongoose.Schema({
-    email: {
+    mobile: {
         require: [true, "User Email required"],
         unique: [true, "that Email is taken. try another"],
         type: String
@@ -24,22 +24,7 @@ const loginSchema = mongoose.Schema({
         type:Boolean
     },
     token:[],
-    themeid:{
-        type:String,
-        require:true
-    },
-    themeselection:{
-        type:String
-    },
-    information:{
-        type:String
-    },
-    assets:{
-        type:String
-    },
-    portfoliourl:{
-        type:String
-    }
+  
 })
 
 module.exports = mongoose.model("Login_Details", loginSchema)
