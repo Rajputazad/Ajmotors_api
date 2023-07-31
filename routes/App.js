@@ -66,7 +66,7 @@ module.exports = function (router) {
       }
 
       const token = jwt.sign({ userid: user._id, role_id: user.role_id }, SECRET_KEY, {
-        expiresIn: "24h"
+        expiresIn: "2h"
       });
 
 
