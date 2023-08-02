@@ -180,8 +180,7 @@ module.exports = function (router) {
               );
             });
           })
-        )
-          .then(async function (results) {
+        ).then(async function (results) {
 
             const data = await dbcar(req.body)
             data.imagedetails = results
