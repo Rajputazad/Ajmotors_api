@@ -124,38 +124,46 @@ module.exports = function (router) {
 
       const dataToDelete  = await dbcar.findByIdAndDelete(req.params._id)
       const imagesToDelete = dataToDelete.imagedetails || [];
-    for (const image of imagesToDelete) {
-      await deleteImage(image.url); // Replace with appropriate function
-    }
+      for (const image of imagesToDelete) {
+        await deleteImage(image.url); // Replace with appropriate function
+      }
       res.status(200).json({ success: true, message: "successfully Deleted!" });
     } catch (error) {
       res.status(500).json({ success: false, message: 'Internal server error' });
     }
   })
 
-  async function deleteImage(imageUrl) {
-    const imageKitPublicKey = 'public_7S6aT5JsIfPXZxFWNMPXrRDNvT0=';
-    const imageKitPrivateKey = 'private_bhtCtdBNAzTzrJqTanvnGUh0+Aw=';
+  // async function deleteImage(imageUrl) {
+  //   const imageKitPublicKey = 'public_7S6aT5JsIfPXZxFWNMPXrRDNvT0=';
+  //   const imageKitPrivateKey = 'private_bhtCtdBNAzTzrJqTanvnGUh0+Aw=';
   
+  //   try {
+  //     const response = await axios.delete(imageUrl, {
+  //       auth: {
+  //         username: imageKitPublicKey,
+  //         password: imageKitPrivateKey,
+  //       },
+  //     });
+  
+  //     if (response.status === 204) {
+  //       console.log('Image deleted successfully');
+  //     } else {
+  //       console.log('Failed to delete image');
+  //     }
+  //   } catch (error) {
+  //     console.error('Error deleting image:', error.message);
+  //   }
+  // }
+
+  async function deleteImage(filename) {
     try {
-      const response = await axios.delete(imageUrl, {
-        auth: {
-          username: imageKitPublicKey,
-          password: imageKitPrivateKey,
-        },
-      });
-  
-      if (response.status === 204) {
-        console.log('Image deleted successfully');
-      } else {
-        console.log('Failed to delete image');
-      }
+      const response = await imagekit.deleteFile(filename);
+      console.log('Image deleted successfully:', response);
     } catch (error) {
-      console.error('Error deleting image:', error.message);
+      console.error('Error deleting image:', error);
     }
   }
-
-
+  
   router.put('/car/:_id', async (req, res) => {
     try {
 
