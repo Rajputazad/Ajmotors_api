@@ -159,7 +159,7 @@ module.exports = function (router) {
         const files = req.files;
         // console.log(files);
         if (!files || files.length === 0) {
-          return res.status(400).json({
+          return res.status(400).json({success:false,
             message: "At least one image is required",
           });
         }
@@ -190,7 +190,7 @@ module.exports = function (router) {
             data.imagedetails = results
             await data.save()
             console.log(results);
-            return res.status(200).json({
+            return res.status(200).json({success:true,
               message: "Data uploaded successfully",
               results: results,
             });
