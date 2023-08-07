@@ -144,7 +144,7 @@ module.exports = function (router) {
 
 
 
-  router.post('/upload', async (req, res) => {
+  router.post('/upload',auth, async (req, res) => {
     try {
       upload(req, res, function (err) {
         if (err instanceof multer.MulterError) {
