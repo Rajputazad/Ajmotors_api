@@ -157,7 +157,7 @@ module.exports = function (router) {
           });
         }
         const files = req.files;
-        // console.log(files);
+        console.log(files.length);
         if (!files || files.length === 0) {
           return res.status(400).json({success:false,
             message: "At least one image is required",
