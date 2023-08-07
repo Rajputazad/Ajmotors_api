@@ -162,7 +162,7 @@ module.exports = function (router) {
           return res.status(400).json({success:false,
             message: "At least one image is required",
           });
-        }
+        }else{
         Promise.all(
           files.map((file) => {
             return new Promise((resolve, reject) => {
@@ -200,7 +200,7 @@ module.exports = function (router) {
             return res.status(400).json({
               message: "There was an error uploading the files",
             });
-          });
+          });}
       });
     } catch (error) {
       console.log(error);
