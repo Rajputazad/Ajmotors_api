@@ -118,15 +118,42 @@ module.exports = function (router) {
     }
   })
 
-  router.delete('/car/:_id', async (req, res) => {
+  router.delete('/cardelete/:_id', async (req, res) => {
     try {
 
-      const cardatas = await dbcar.findByIdAndDelete(req.params._id)
+      const dataToDelete  = await dbcar.findByIdAndDelete(req.params._id)
+      const imagesToDelete = dataToDelete.imagedetails || [];
+    for (const image of imagesToDelete) {
+      await deleteImage(image.url); // Replace with appropriate function
+    }
       res.status(200).json({ success: true, message: "successfully Deleted!" });
     } catch (error) {
       res.status(500).json({ success: false, message: 'Internal server error' });
     }
   })
+
+  async function deleteImage(imageUrl) {
+    const imageKitPublicKey = 'public_7S6aT5JsIfPXZxFWNMPXrRDNvT0=';
+    const imageKitPrivateKey = 'private_bhtCtdBNAzTzrJqTanvnGUh0+Aw=';
+  
+    try {
+      const response = await axios.delete(imageUrl, {
+        auth: {
+          username: imageKitPublicKey,
+          password: imageKitPrivateKey,
+        },
+      });
+  
+      if (response.status === 204) {
+        console.log('Image deleted successfully');
+      } else {
+        console.log('Failed to delete image');
+      }
+    } catch (error) {
+      console.error('Error deleting image:', error.message);
+    }
+  }
+
 
   router.put('/car/:_id', async (req, res) => {
     try {
