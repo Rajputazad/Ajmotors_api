@@ -13,7 +13,7 @@ const upload = multer({
   storage: storage,
   fileFilter: function (req, file, cb) {
     if (
-      file.fieldname=null
+      file.originalname=null
     ) {
       return cb(new Error("Only image files are allowed"));
     }
