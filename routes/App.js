@@ -9,6 +9,7 @@ const fs = require("fs")
 const multer = require("multer");
 const multe = require("multer")();
 const auth = require("../middleware/auth")
+const axios = require('axios'); 
 module.exports = function (router) {
 
   router.post('/register',multe.any(), async (req, res) => {
