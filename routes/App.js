@@ -189,7 +189,7 @@ module.exports = function (router) {
             const data = await dbcar(req.body)
             data.imagedetails = results
             await data.save()
-            console.log(results);
+            // console.log(results);
             return res.status(200).json({success:true,
               message: "Data uploaded successfully",
               results: results,
