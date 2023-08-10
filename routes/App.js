@@ -121,7 +121,7 @@ module.exports = function (router) {
     }
   })
 
-  router.delete('/cardelete/:_id', async (req, res) => {
+  router.delete('/cardelete/:_id',auth, async (req, res) => {
     try {
 
       const dataToDelete  = await dbcar.findByIdAndDelete(req.params._id)
