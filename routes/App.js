@@ -105,7 +105,7 @@ module.exports = function (router) {
       const userid = req.decoded.userid;
 
       const userdatas = await db.findById(userid).select("-password -token");
-      console.log(userdatas);
+      // console.log(userdatas);
       if (userdatas == null || userdatas == undefined || !userdatas) {
         res.status(401).json({
           success: false,
