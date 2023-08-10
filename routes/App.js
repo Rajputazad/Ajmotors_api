@@ -85,7 +85,9 @@ module.exports = function (router) {
   router.get('/home', auth, async (req, res) => {
     try {
       const userid = req.decoded.userid;
-      const userdatas = await db.findById(userid).select("-password -token");;
+
+      const userdatas = await db.findById(userid).select("-password -token");
+      console.log(userdatas);
       res.status(200).json({ success: true, data: userdatas });
     } catch (error) {
       res.status(500).json({ success: false, message: 'Internal server error' });
