@@ -253,11 +253,11 @@ module.exports = function (router) {
 
   router.put("/carupdate/:_id",multe.any(), auth, async (req, res) => {
     try {
-      console.log(req.body)
-     var data=  await dbcar.findByIdAndUpdate(req.params._id, {
+      // console.log(req.body)
+    await dbcar.findByIdAndUpdate(req.params._id, {
         $set: req.body,
       });
-      console.log(data);
+      // console.log(data);
       res.status(200).json({ success: true, message: "successfully updated!" });
     } catch (error) {
       console.log(error);
