@@ -253,7 +253,7 @@ module.exports = function (router) {
 
   router.put("/carupdate/:_id", auth, async (req, res) => {
     try {
-      console(req.body)
+      console.log(req.body)
      var data=  await dbcar.findByIdAndUpdate(req.params._id, {
         $set: req.body,
       });
