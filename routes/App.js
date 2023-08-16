@@ -251,7 +251,7 @@ module.exports = function (router) {
     }
   }
 
-  router.put("/carupdate/:_id", auth, async (req, res) => {
+  router.put("/carupdate/:_id",multe.any(), auth, async (req, res) => {
     try {
       console.log(req.body)
      var data=  await dbcar.findByIdAndUpdate(req.params._id, {
