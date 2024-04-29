@@ -10,7 +10,11 @@ app.use(express.json());
 const cors = require("cors")
 const cookies = require("cookie-parser")
 const morgan = require("morgan");
-app.use((express.json({limit:"50mb"})))
+app.use(express.json({ limit: '50mb' }));
+app.use(express.urlencoded({ extended: true, limit: '50mb' }));
+// const bodyParser = require('body-parser');
+// app.use(bodyParser.urlencoded({ limit: '100mb', extended: true }));
+
 app.use(cookies())
 app.use(
     cors({

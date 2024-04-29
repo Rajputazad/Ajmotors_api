@@ -51,6 +51,9 @@ const theme = mongoose.Schema({
     numberplate:{
         require: [true, "description  required"],
         type:String
+    },
+    url:{
+        type:String
     }
 })
 

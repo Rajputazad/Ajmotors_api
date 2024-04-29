@@ -123,17 +123,12 @@ module.exports = function (router) {
 
   // const dataPerPage = 2;
   // let currentPage = 1;
-  router.get("/cars/:page", async (req, res) => {
+  router.get("/cars", async (req, res) => {
     try {
       const dataPerPage = 10;
       const skip = (req.params.page - 1) * 10;
       const cardatas = await dbcar
-        .find({})
-        .sort({ _id: -1 })
-        .skip(skip)
-        .limit(dataPerPage)
-        .lean()
-        .exec();
+        .find()
       // const reversedata = cardatas.reverse();
       //  currentPage++;
       res.status(200).json({ success: true, data: cardatas });
@@ -159,10 +154,10 @@ module.exports = function (router) {
   router.delete("/cardelete/:_id", auth, async (req, res) => {
     try {
       const dataToDelete = await dbcar.findByIdAndDelete(req.params._id);
-      const imagesToDelete = dataToDelete.imagedetails || [];
-      for (const image of imagesToDelete) {
-        await deleteImage(image.fileId); // Replace with appropriate function
-      }
+      // const imagesToDelete = dataToDelete.imagedetails || [];
+      // for (const image of imagesToDelete) {
+      //   await deleteImage(image.fileId); // Replace with appropriate function
+      // }
       res.status(200).json({ success: true, message: "successfully Deleted!" });
     } catch (error) {
       res
@@ -267,53 +262,12 @@ module.exports = function (router) {
     }
   });
 
-  router.post("/upload", auth, async (req, res) => {
+  router.post("/upload", async (req, res) => {
     try {
-      upload(req, res, function (err) {
-        if (err instanceof multer.MulterError) {
-          return res.status(400).json({
-            message: "There was an error uploading the files",
-          });
-        } else if (err) {
-          return res.status(400).json({
-            message: err.message,
-          });
-        }
-        const files = req.files;
-        console.log(files.length);
-        if (!files || files.length === 0) {
-          return res
-            .status(400)
-            .json({
-              success: false,
-              message: "At least one image is required",
-            });
-        } else {
-          Promise.all(
-            files.map((file) => {
-              return new Promise((resolve, reject) => {
-                const fileStream = fs.createReadStream(file.path);
-
-                imagekit.upload(
-                  {
-                    file: fileStream,
-                    fileName: file.originalname,
-                    folder: "/Uday_Motors",
-                  },
-                  function (error, result) {
-                    if (error) {
-                      reject(error);
-                    } else {
-                      resolve(result);
-                    }
-                  }
-                );
-              });
-            })
-          )
-            .then(async function (results) {
+      
               const data = await dbcar(req.body);
-              data.imagedetails = results;
+              // data.imagedetails = results;
+              console.log(req.body);
               await data.save();
               // console.log(results);
               return res
@@ -321,17 +275,9 @@ module.exports = function (router) {
                 .json({
                   success: true,
                   message: "Data uploaded successfully",
-                  results: results,
+                  // results: results,
                 });
-            })
-            .catch((error) => {
-              console.log(error);
-              return res.status(400).json({
-                message: "There was an error uploading the files",
-              });
-            });
-        }
-      });
+            
     } catch (error) {
       console.log(error);
       res
